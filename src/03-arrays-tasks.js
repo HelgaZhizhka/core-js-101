@@ -7,7 +7,6 @@
  *                                                                                            *
  ******************************************************************************************** */
 
-
 /**
  * Returns an index of the specified element in array or -1 if element is not found
  *
@@ -39,7 +38,6 @@ function generateOdds(len) {
   return Array.from({ length: len }, (el, i) => i * 2 + 1);
 }
 
-
 /**
  * Returns the doubled array - elements of the specified array
  * are repeated twice using original order
@@ -55,7 +53,6 @@ function generateOdds(len) {
 function doubleArray(arr) {
   return [...arr, ...arr];
 }
-
 
 /**
  * Returns an array of positive numbers from the specified array in original order
@@ -84,7 +81,7 @@ function getArrayOfPositives(arr) {
  *    [ 'cat, 'dog', 'raccoon' ] => [ 'cat', 'dog', 'raccoon' ]
  */
 function getArrayOfStrings(arr) {
-  return arr.filter((el) => (typeof el === 'string' || el instanceof String));
+  return arr.filter((el) => typeof el === 'string' || el instanceof String);
 }
 
 /**
@@ -118,7 +115,6 @@ function removeFalsyValues(arr) {
 function getUpperCaseStrings(arr) {
   return arr.map((el) => el.toUpperCase());
 }
-
 
 /**
  * Returns the array of string lengths from the specified string array.
@@ -163,7 +159,6 @@ function getHead(arr, n) {
   return [...arr].splice(0, n);
 }
 
-
 /**
  * Returns the n last items of the specified array
  *
@@ -177,7 +172,6 @@ function getHead(arr, n) {
 function getTail(arr, n) {
   return [...arr].splice(arr.length - n, n);
 }
-
 
 /**
  * Returns CSV representation of two-dimensional numeric array.
@@ -218,7 +212,6 @@ function toArrayOfSquares(arr) {
   return [...arr].map((el) => el ** 2);
 }
 
-
 /**
  * Transforms the numeric array to the according moving sum array:
  *     f[n] = x[0] + x[1] + x[2] +...+ x[n]
@@ -252,7 +245,6 @@ function getSecondItems(arr) {
   return arr.filter((el, indx) => indx % 2 !== 0);
 }
 
-
 /**
  * Propagates every item in sequence its position times
  * Returns an array that consists of: one first item, two second items, three third items etc.
@@ -269,9 +261,11 @@ function getSecondItems(arr) {
  */
 function propagateItemsByPositionIndex(arr) {
   if (!arr.length) return [];
-  return arr.reduce((acc, el, indx) => acc.concat(Array(indx + 1).fill(el)), []);
+  return arr.reduce(
+    (acc, el, indx) => acc.concat(Array(indx + 1).fill(el)),
+    [],
+  );
 }
-
 
 /**
  * Returns the 3 largest numbers from the specified array
@@ -290,7 +284,6 @@ function get3TopItems(arr) {
   return [...arr].sort((a, b) => b - a).splice(0, 3);
 }
 
-
 /**
  * Returns the number of positive numbers from specified array
  *
@@ -305,7 +298,7 @@ function get3TopItems(arr) {
  *   [ 1, '2' ] => 1
  */
 function getPositivesCount(arr) {
-  return arr.filter((el) => typeof (el) === 'number' && el > 0).length;
+  return arr.filter((el) => typeof el === 'number' && el > 0).length;
 }
 
 /**
@@ -323,8 +316,18 @@ function getPositivesCount(arr) {
  */
 function sortDigitNamesByNumericOrder(arr) {
   return [...arr].sort((a, b) => {
-    const digits = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight',
-      'nine'];
+    const digits = [
+      'zero',
+      'one',
+      'two',
+      'three',
+      'four',
+      'five',
+      'six',
+      'seven',
+      'eight',
+      'nine',
+    ];
     return digits.indexOf(a) - digits.indexOf(b);
   });
 }
@@ -394,7 +397,6 @@ function toStringList(arr) {
   return arr.join(',');
 }
 
-
 /**
  * Sorts the specified array by country name first and city name
  * (if countries are equal) in ascending order.
@@ -425,12 +427,14 @@ function sortCitiesArray(arr) {
   return arr.sort((a, b) => {
     if (a.country > b.country) {
       return 1;
-    } if (a.country < b.country) {
+    }
+    if (a.country < b.country) {
       return -1;
     }
     if (a.city > b.city) {
       return 1;
-    } if (a.city < b.city) {
+    }
+    if (a.city < b.city) {
       return -1;
     }
     return 0;
@@ -455,8 +459,17 @@ function sortCitiesArray(arr) {
  *           [0,0,0,1,0],
  *           [0,0,0,0,1]]
  */
-function getIdentityMatrix(/* n */) {
-  throw new Error('Not implemented');
+function getIdentityMatrix(n) {
+  const arr = [];
+  arr.length = n;
+  arr.fill(0);
+  return arr.map((el, indx) => {
+    const arrTemp = [];
+    arrTemp.length = n;
+    arrTemp.fill(0);
+    arrTemp[indx] = 1;
+    return arrTemp;
+  });
 }
 
 /**
@@ -524,10 +537,18 @@ function distinct(arr) {
  *    "Poland" => ["Lodz"]
  *   }
  */
-function group(/* array, keySelector, valueSelector */) {
-  throw new Error('Not implemented');
+function group(array, keySelector, valueSelector) {
+  const res = new Map();
+  array.map((el) => {
+    if (res.has(keySelector(el))) {
+      res.get(keySelector(el)).push(valueSelector(el));
+    } else {
+      res.set(keySelector(el), [valueSelector(el)]);
+    }
+    return el;
+  });
+  return res;
 }
-
 
 /**
  * Projects each element of the specified array to a sequence
@@ -542,10 +563,10 @@ function group(/* array, keySelector, valueSelector */) {
  *   [[1, 2], [3, 4], [5, 6]], (x) => x     =>   [ 1, 2, 3, 4, 5, 6 ]
  *   ['one','two','three'], (x) => x.split('')  =>   ['o','n','e','t','w','o','t','h','r','e','e']
  */
-function selectMany(/* arr, childrenSelector */) {
-  throw new Error('Not implemented');
+function selectMany(arr, childrenSelector) {
+  const res = arr.map((el) => childrenSelector(el));
+  return res.reduce((acc, el) => acc.concat(el), []);
 }
-
 
 /**
  * Returns an element from the multidimensional array by the specified indexes.
@@ -562,7 +583,6 @@ function selectMany(/* arr, childrenSelector */) {
 function getElementByIndexes(arr, indexes) {
   return indexes.reduce((acc, el) => acc[el], arr);
 }
-
 
 /**
  * Swaps the head and tail of the specified array:
@@ -582,10 +602,21 @@ function getElementByIndexes(arr, indexes) {
  *   [ 1, 2, 3, 4, 5, 6, 7, 8 ]   =>  [ 5, 6, 7, 8, 1, 2, 3, 4 ]
  *
  */
-function swapHeadAndTail(/* arr */) {
-  throw new Error('Not implemented');
-}
+function swapHeadAndTail(arr) {
+  if (arr.length === 1) {
+    return arr;
+  }
 
+  const middle = Math.floor(arr.length / 2);
+  const head = arr.slice(0, middle);
+  const tail = arr.length % 2 === 0 ? arr.slice(middle) : arr.slice(middle + 1);
+
+  if (arr.length % 2 === 0) {
+    return tail.concat(head);
+  }
+
+  return tail.concat(arr[middle], head);
+}
 
 module.exports = {
   findElement,
